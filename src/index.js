@@ -3,9 +3,21 @@
 import dotenv from 'dotenv';
 import connectDB from './db/db.js';
 
-dotenv.config({ path: "./public/.env" });
+dotenv.config({ path: "/.env" });
 
-connectDB();
+connectDB()
+.then(() => {
+    app.on("error", (error) => {
+        console.log("ERRR: ", error);
+    });
+
+    app.listen(process.env.PORT || 8000, () => {
+        console.log(`App is running on port: ${process.env.PORT}`)
+    });
+})
+.catch((error) => {
+    console.log("DB connection failed!!", error);
+});
 
 
 
