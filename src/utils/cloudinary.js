@@ -1,5 +1,5 @@
 import { v2 as cloudinary } from 'cloudinary';
-import fs from 'fs';    //fs - file system -> helps to read, write file
+import fs from 'fs';    //fs - file system -> helps to read, write file, edit files
 
 cloudinary.config({ 
     cloud_name: process.env.CLOUDINARY_CLOUD_NAME, 
@@ -26,3 +26,5 @@ const uploadOnCloudinary = async (localFilePath) => {
         return null;
     }
 }
+
+export { uploadOnCloudinary }
