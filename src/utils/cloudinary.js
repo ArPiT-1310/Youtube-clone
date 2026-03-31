@@ -1,3 +1,6 @@
+import dotenv from "dotenv";
+dotenv.config();
+
 import { v2 as cloudinary } from 'cloudinary';
 import fs from 'fs';    //fs - file system -> helps to read, write file, edit files
 
@@ -16,9 +19,7 @@ const uploadOnCloudinary = async (localFilePath) => {
         const response = await cloudinary.uploader.upload(localFilePath, {
             resource_type: "auto"
         });
-
-        console.log("File uploaded successfully", response.url);
-
+        fs.unlinkSync(localFilePath);
         return response;
     } catch (error) {
         //remove the file from local server if uploaded or not to not cause bugs

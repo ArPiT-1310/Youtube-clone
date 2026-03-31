@@ -59,14 +59,13 @@ const userSchema = new Schema(
 )
 
 //pre hook
-userSchema.pre("save", async function (next) {
+userSchema.pre("save", async function () {
     
     //if poassowrd field is not modified => then don't encrypt the password
     if(!this.isModified("password")) return next()
     
     //else encrypt it
     this.password = await bcrypt.hash(this.password, 10);
-    next();
 })
 
 //checking password enetered is correct or not
@@ -75,7 +74,7 @@ userSchema.methods.isPasswordCorrect = async function (password) {
 }
 
 //our own method to generate token
-username.methods.generateAccessToken = function() {
+userSchema.methods.generateAccessToken = function() {
     return jwt.sign(
         //payload
         {
@@ -93,7 +92,7 @@ username.methods.generateAccessToken = function() {
     );
 }
 
-username.methods.generateRefreshToken = function() {
+userSchema.methods.generateRefreshToken = function() {
     return jwt.sign(
         //payload
         {
