@@ -1,0 +1,40 @@
+$kind: http-request
+name: register
+url: "{{server}}/api/v1/users/register"
+method: POST
+body:
+  type: formdata
+  content:
+    - type: text
+      key: fullname
+      value: Arpit Anand
+      description: ""
+      disabled: false
+    - type: text
+      key: email
+      value: arpit123@gmail.com
+      description: ""
+      disabled: false
+    - type: text
+      key: username
+      value: arpit123
+      description: ""
+      disabled: false
+    - type: file
+      key: avatar
+      src:
+        - /C:/Users/iarpi/Pictures/Screenshots/Screenshot 2025-09-18 000431.png
+      description: ""
+      disabled: false
+    - type: file
+      key: coverImage
+      src:
+        - /C:/Users/iarpi/Pictures/Screenshots/Screenshot 2025-09-18 000459.png
+      description: ""
+      disabled: false
+    - type: text
+      key: password
+      value: "12345678"
+      description: ""
+      disabled: false
+order: 1275097921444070

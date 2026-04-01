@@ -1,13 +1,32 @@
 import { asyncHandler } from "../utils/asyncHandler.js";
 import { ApiError } from "../utils/ApiError.js";
-import { User } from "../models/user.model.js";
+import { User, generateAccessToken, generateRefreshToken, isPasswordCorrect } from "../models/user.model.js";
 import { uploadOnCloudinary } from "../utils/cloudinary.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
+
+
+//method to generate access and refresh tokens => becoz we will be using it in various other places
+const generateAccessAndRefreshToken = async (userId) => {
+    try {
+        const user = await User.findById(userId);
+
+        //generate tokens
+        const accessToken = user.generateAccessToken();
+        const refreshToken = user.generateRefreshToken();
+
+        //add the refresh token in DB so we would not have to enter password and username again
+        user.refreshToken = refreshToken
+        await user.save({ validateBeforeSave : false });
+
+        return {accessToken, refreshToken};
+    } catch(error) {
+        throw new ApiError(500, "Something went wrong while generating access and refresh token!");
+    }
+}
 
 //Step 1: taking user details
 const registerUser = asyncHandler( async (req, res) => {
     const { fullname, email, username, password } = req.body;
-    console.log('Email :', email);
 
     //Step 2: validation
     if(
@@ -25,7 +44,6 @@ const registerUser = asyncHandler( async (req, res) => {
     if(existedUser) {
         throw new ApiError(409, "User with username or email already exists");
     }
-    console.log(existedUser);
 
     //Step 4: check for avatar and coverImage as it is compulsory
     //multer provides access to files uploaded and their paths 
@@ -77,11 +95,66 @@ const registerUser = asyncHandler( async (req, res) => {
     }
 
     //Step 8 : return response
-    // sourcery skip: remove-unreachable-code
-    // sourcery skip: return-outside-function
     return res.status(201).json(
         new ApiResponse(200, createdUser, "User Registered Successfully!")
     )
 });
 
-export { registerUser }
+
+//login user
+const loginUser = asyncHandler(async (req, res) => {
+    //Step 1 : data lo -> req.body se
+    const {username, email, passowrd} = req.body;
+
+    //check if fields are not empty
+    if(!username || !email) {
+        throw new ApiError(400, "Username or email is required!");
+    }
+
+    //Step 2 : check for username or email in DB -> hum dono se login krenge username and email 
+    const user = User.findOne({
+        $or: [{username}, {email}]
+    });
+
+    //if user not found => user doesn't exist
+    if(!user) {
+        throw new ApiError(404, "User with username or email doesn't exist!");
+    }
+
+    //Step 3 : check password correction => we have a method isPassowrdCorrect to check if password is correct or not
+    const isPasswordValid = await user.isPasswordCorrect(passowrd);
+
+    if(!isPasswordValid) {
+        throw new ApiError(401, "Password incorrect!");
+    }
+
+    //generate tokens
+    const {accessToken, refreshToken } = await generateAccessAndRefreshToken(user._id);
+
+    const loggenInUser = await User.findById(user._id).select("-password -refreshToken");
+
+    //Step 4 : Send cookies
+    const options = {
+        httpOnly : true,
+        secure : true
+    }
+    
+    //Step 5 : return response
+    return res
+    .status(200)
+    .cookie("accessToken", accessToken, options)
+    .cookie("refreshToken", refreshToken, options)
+    .json(
+        new ApiResponse(
+            200, {
+                user: loggenInUser, accessToken, refreshToken
+            },
+            "User logged in Successfully"
+        )
+    )
+});
+
+export { 
+    registerUser,
+    loginUser
+}
