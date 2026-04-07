@@ -131,7 +131,7 @@ const loginUser = asyncHandler(async (req, res) => {
     //generate tokens
     const {accessToken, refreshToken } = await generateAccessAndRefreshToken(user._id);
 
-    const loggenInUser = await User.findById(user._id).select("-password -refreshToken");
+    const loggedInUser = await User.findById(user._id).select("-password -refreshToken");
 
     //Step 4 : Send cookies
     const options = {
@@ -147,7 +147,7 @@ const loginUser = asyncHandler(async (req, res) => {
     .json(
         new ApiResponse(
             200, {
-                user: loggenInUser, accessToken, refreshToken
+                user: loggedInUser, accessToken, refreshToken
             },
             "User logged in Successfully"
         )
