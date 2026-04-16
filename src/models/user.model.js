@@ -62,7 +62,9 @@ const userSchema = new Schema(
 userSchema.pre("save", async function () {
     
     //if poassowrd field is not modified => then don't encrypt the password
-    if(!this.isModified("password")) return next()
+    if(!this.isModified("password")) { 
+        return;
+    }
     
     //else encrypt it
     this.password = await bcrypt.hash(this.password, 10);
@@ -87,7 +89,7 @@ userSchema.methods.generateAccessToken = function() {
         process.env.ACCESS_TOKEN_SECRET,
         //expiry of token 
         {
-            expiresIn: ACCESS_TOKEN_EXPIRY
+            expiresIn: process.env.ACCESS_TOKEN_EXPIRY
         }
     );
 }
@@ -102,7 +104,7 @@ userSchema.methods.generateRefreshToken = function() {
         process.env.REFRESH_TOKEN_SECRET,
         //expiry of token 
         {
-            expiresIn: REFRESH_TOKEN_EXPIRY
+            expiresIn: process.env.REFRESH_TOKEN_EXPIRY
         }
     );
 }

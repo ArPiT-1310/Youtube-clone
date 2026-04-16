@@ -1,6 +1,6 @@
 import { asyncHandler } from "../utils/asyncHandler.js";
 import { ApiError } from "../utils/ApiError.js";
-import { User, generateAccessToken, generateRefreshToken, isPasswordCorrect } from "../models/user.model.js";
+import { User } from "../models/user.model.js";
 import { uploadOnCloudinary } from "../utils/cloudinary.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
 
@@ -20,7 +20,7 @@ const generateAccessAndRefreshToken = async (userId) => {
 
         return {accessToken, refreshToken};
     } catch(error) {
-        throw new ApiError(500, "Something went wrong while generating access and refresh token!");
+        throw new ApiError(500, error.message);
     }
 }
 
@@ -104,17 +104,19 @@ const registerUser = asyncHandler( async (req, res) => {
 //login user
 const loginUser = asyncHandler(async (req, res) => {
     //Step 1 : data lo -> req.body se
-    const {username, email, passowrd} = req.body;
+    const {username, email, password} = req.body;
+
 
     //check if fields are not empty
-    if(!username || !email) {
+    if(!(username || email)) {
         throw new ApiError(400, "Username or email is required!");
     }
 
     //Step 2 : check for username or email in DB -> hum dono se login krenge username and email 
-    const user = User.findOne({
-        $or: [{username}, {email}]
-    });
+    const user = await User.findOne({
+        $or: [{ username }, { email }]
+    }).select("+password");
+
 
     //if user not found => user doesn't exist
     if(!user) {
@@ -122,7 +124,7 @@ const loginUser = asyncHandler(async (req, res) => {
     }
 
     //Step 3 : check password correction => we have a method isPassowrdCorrect to check if password is correct or not
-    const isPasswordValid = await user.isPasswordCorrect(passowrd);
+    const isPasswordValid = await user.isPasswordCorrect(password);
 
     if(!isPasswordValid) {
         throw new ApiError(401, "Password incorrect!");
