@@ -4,5 +4,11 @@ url: "{{server}}/users/login"
 method: POST
 body:
   type: json
-  content: ""
+  content: "{\r
+
+    \    \"username\": \"arpit123\",\r
+
+    \    \"password\": \"12345678\"\r
+
+    }"
 order: 2370939475487799
