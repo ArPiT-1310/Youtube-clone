@@ -5,7 +5,7 @@ import { uploadOnCloudinary } from "../utils/cloudinary.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
 
 
-//method to generate access and refresh tokens => becoz we will be using it in various other places
+//method to generate access and refresh tokens => because we will be using it in various other places
 const generateAccessAndRefreshToken = async (userId) => {
     try {
         const user = await User.findById(userId);
@@ -77,7 +77,7 @@ const registerUser = asyncHandler( async (req, res) => {
     const user = await User.create(
         {
             fullname,
-            avatar : avatar.url,  //we return response in uploadOnCludinary and we can reutrn url using .url
+            avatar : avatar.url,  //we return response in uploadOncloudinary and we can return url using .url
             coverImage: coverImage?.url || "",
             email,
             password,
@@ -123,7 +123,7 @@ const loginUser = asyncHandler(async (req, res) => {
         throw new ApiError(404, "User with username or email doesn't exist!");
     }
 
-    //Step 3 : check password correction => we have a method isPassowrdCorrect to check if password is correct or not
+    //Step 3 : check password correction => we have a method ispasswordCorrect to check if password is correct or not
     const isPasswordValid = await user.isPasswordCorrect(password);
 
     if(!isPasswordValid) {
