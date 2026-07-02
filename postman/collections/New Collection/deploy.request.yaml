@@ -1,0 +1,7 @@
+$kind: http-request
+name: deploy
+url: http://localhost:8080/api/runs/7/stages
+method: GET
+headers:
+  Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoiUk9MRV9BRE1JTiIsInN1YiI6ImFkbWluIiwiaWF0IjoxNzc5NzU0NDM2LCJleHAiOjE3Nzk4NDA4MzZ9.BGbhvdyRQRCuGZQB1fcsEof6A6iq92fda9_cMynBpG4
+order: 4209224310868203

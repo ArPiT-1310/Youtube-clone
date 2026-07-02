@@ -1,0 +1,18 @@
+$kind: http-request
+name: build
+url: http://localhost:8080/api/pipelines
+method: POST
+headers:
+  - key: Authorization
+    value: Bearer
+      eyJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoiUk9MRV9BRE1JTiIsInN1YiI6ImFkbWluIiwiaWF0IjoxNzc5NzQ2NDM4LCJleHAiOjE3Nzk4MzI4Mzh9.kqa6cUoJBc9fqRHYIy9cxsaRyiOlWplCsFp-B_GP2LA
+body:
+  type: json
+  content: "{\r
+
+    \  \"name\": \"My First Pipeline\",\r
+
+    \  \"repositoryUrl\": \"https://github.com/yourname/project.git\"\r
+
+    }"
+order: 3210660921103131

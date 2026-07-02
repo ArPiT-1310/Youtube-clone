@@ -1,0 +1,18 @@
+$kind: http-request
+name: login
+url: https://qzktvmjjcqouozyontvo.supabase.co/auth/v1/token?grant_type=password
+method: POST
+headers:
+  apikey: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InF6a3R2bWpqY3FvdW96eW9udHZvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzgyNDYxODIsImV4cCI6MjA5MzgyMjE4Mn0.iPzJLK007LipihGiRB-R13owyfLrX3MvOeKR7i1_Ot8
+queryParams:
+  grant_type: password
+body:
+  type: json
+  content: "{\r
+
+    \  \"email\": \"lifelinkdemo123@gmail.com\",\r
+
+    \  \"password\": \"password123\"\r
+
+    }\r\n"
+order: 3418571752156770

@@ -1,0 +1,8 @@
+$kind: http-request
+name: check authorization
+url: https://qzktvmjjcqouozyontvo.supabase.co/rest/v1/users
+method: GET
+headers:
+  apikey: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InF6a3R2bWpqY3FvdW96eW9udHZvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzgyNDYxODIsImV4cCI6MjA5MzgyMjE4Mn0.iPzJLK007LipihGiRB-R13owyfLrX3MvOeKR7i1_Ot8
+  Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InF6a3R2bWpqY3FvdW96eW9udHZvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzgyNDYxODIsImV4cCI6MjA5MzgyMjE4Mn0.iPzJLK007LipihGiRB-R13owyfLrX3MvOeKR7i1_Ot8
+order: 1778305066608

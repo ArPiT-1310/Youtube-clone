@@ -1,0 +1,7 @@
+$kind: http-request
+name: trigger
+url: http://localhost:8080/api/pipelines/3/trigger
+method: POST
+headers:
+  Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoiUk9MRV9BRE1JTiIsInN1YiI6ImFkbWluIiwiaWF0IjoxNzc5NzQ2NDM4LCJleHAiOjE3Nzk4MzI4Mzh9.kqa6cUoJBc9fqRHYIy9cxsaRyiOlWplCsFp-B_GP2LA
+order: 3505342756445530
