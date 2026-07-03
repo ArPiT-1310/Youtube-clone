@@ -244,9 +244,97 @@ const refreshAccessToken = asyncHandler( async (req, res) => {
 })
 //now we will export this in routes to make it an endpoint
 
+//controller to change password
+const changeCurrentPassword = asyncHandler( async (req, res) => {
+    //get oldpass and new pass from body
+    const {oldPassword, newPassword} = req.body;
+
+    //now we will take user and their password stored in db and compare oldPass with the password stored if correct or not
+    const user = await User.findById(req.user?._id);
+    const isPasswordCorrect = await user.isPasswordCorrect(oldPassword);
+
+    if(!isPasswordCorrect) {
+        throw new ApiError(400, "Invalid old password.");
+    }
+
+    //now change to new password
+    user.password = newPassword;
+    await user.save({validateBeforeSave: false})
+
+    //return response to user
+    return res
+    .status(200)
+    .json({
+        message : "password changed successfully"
+    })
+})
+
+const getCurrentUser = asyncHandler( async (req, res) => {
+    return res
+    .status(200)
+    .json(200, req.user, "current user fetched successfully.")
+})
+
+//controller to update account details (text based)
+const updateAccountDetails = asyncHandler( async (req, res) => {
+    const {fullName, email} = req.body;
+
+    if(!fullName || !email) {
+        throw new ApiError(400, "Account details are required.");
+    }
+
+    const user = User.findByIdAndUpdate(
+        req.user?._id,
+        {
+            $set: {
+                fullName,
+                email
+            }
+        },
+        {new : true}
+    ).select("-password");
+
+    return res
+    .status(200)
+    .json(new ApiResponse(200, "Account details updated successfully"));
+})
+
+//controller to update file based details
+const updateAvatar = asyncHandler( async (req, res) => {
+    //take avatar from user
+    const avatarLocalPath = req.file?.path;
+
+    if(!avatarLocalPath) {
+        throw new ApiError(400, "Avatar is missing")
+    }
+
+    //now upload new avatar on cloudinary
+    const avatar = await uploadOnCloudinary(avatarLocalPath);
+
+    if(!avatar.url) {
+        throw new ApiError(500, "Error while uploading avatar.")
+    }
+
+    //now update avatar field
+    await User.findByIdAndUpdate(
+        req.user?._id,
+        {
+            $set : {
+                avatar : avatar.url
+            }
+        },
+        {new: true}
+    ).select("-password")
+})
+
+
 export { 
     registerUser,
     loginUser,
     logoutUser,
-    refreshAccessToken
+    refreshAccessToken,
+    changeCurrentPassword,
+    getCurrentUser,
+    updateAccountDetails,
+    updateAvatar
 }
