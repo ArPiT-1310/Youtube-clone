@@ -1,5 +1,4 @@
 $kind: http-request
-name: New Request
 url: "{{server}}/users/logout"
 method: POST
 body:
