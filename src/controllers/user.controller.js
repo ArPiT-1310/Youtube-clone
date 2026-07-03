@@ -276,7 +276,7 @@ const getCurrentUser = asyncHandler( async (req, res) => {
 })
 
 //controller to update account details (text based)
-const updateAccountDetails = asyncHandler( async (req, res) => {
+const updateUserAccountDetails = asyncHandler( async (req, res) => {
     const {fullName, email} = req.body;
 
     if(!fullName || !email) {
@@ -299,8 +299,8 @@ const updateAccountDetails = asyncHandler( async (req, res) => {
     .json(new ApiResponse(200, "Account details updated successfully"));
 })
 
-//controller to update file based details
-const updateAvatar = asyncHandler( async (req, res) => {
+//controller to update file based details - avatar
+const updateUserAvatar = asyncHandler( async (req, res) => {
     //take avatar from user
     const avatarLocalPath = req.file?.path;
 
@@ -316,7 +316,7 @@ const updateAvatar = asyncHandler( async (req, res) => {
     }
 
     //now update avatar field
-    await User.findByIdAndUpdate(
+    const user = await User.findByIdAndUpdate(
         req.user?._id,
         {
             $set : {
@@ -325,9 +325,43 @@ const updateAvatar = asyncHandler( async (req, res) => {
         },
         {new: true}
     ).select("-password")
+
+    return res
+    .status(200)
+    .json(new ApiResponse(200, user, "Avatar update successfully."))
 })
 
+const updateUserCoverImage = asyncHandler( async (req, res) => {
+    //take avatar from user
+    const coverImageLocalPath = req.file?.path;
 
+    if(!coverImageLocalPath) {
+        throw new ApiError(400, "Avatar is missing")
+    }
+
+    //now upload new cover iamge on cloudinary
+    const coverImage = await uploadOnCloudinary(coverImageLocalPath);
+
+    if(!coverImage.url) {
+        throw new ApiError(500, "Error while uploading cover image.")
+    }
+
+    //now update cover image field
+    const user = await User.findByIdAndUpdate(
+        req.user?._id,
+        {
+            $set : {
+                coverImage : coverImage.url
+            }
+        },
+        {new: true}
+    ).select("-password")
+
+    //send response
+    return res
+    .status(200)
+    .json(new ApiResponse(200, user, "Cover image update successfully."))
+})
 export { 
     registerUser,
     loginUser,
@@ -335,6 +369,7 @@ export {
     refreshAccessToken,
     changeCurrentPassword,
     getCurrentUser,
-    updateAccountDetails,
-    updateAvatar
+    updateUserAccountDetails,
+    updateUserAvatar,
+    updateUserCoverImage
 }
