@@ -1,0 +1,20 @@
+$kind: http-request
+name: login
+url: "{{server}}/auth/login"
+method: POST
+body:
+  type: json
+  content: "{\r
+
+    \  \"name\": \"Arpit\",\r
+
+    \  \"email\": \"arpit@example.com\",\r
+
+    \  \"password\": \"password123\"\r
+
+    }\r\n"
+auth:
+  type: bearer
+  credentials:
+    token: ""
+order: 3595558037657286

@@ -1,0 +1,22 @@
+$kind: http-request
+name: update project by id
+url: "{{server}}/projects/update/6a49e1c214ae28e3f6d42981"
+method: PATCH
+body:
+  type: json
+  content: "{\r
+
+    \  \"name\": \"Renamed Project\",\r
+
+    \  \"rateLimit\": {\r
+
+    \    \"maxRequests\": 200\r
+
+    \  }\r
+
+    }\r\n"
+auth:
+  type: bearer
+  credentials:
+    token: ""
+order: 4116521804421531

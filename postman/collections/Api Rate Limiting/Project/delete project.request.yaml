@@ -1,0 +1,8 @@
+$kind: http-request
+url: "{{server}}/projects/delete/6a49e1c214ae28e3f6d42981"
+method: DELETE
+auth:
+  type: bearer
+  credentials:
+    token: ""
+order: 4140432842287758

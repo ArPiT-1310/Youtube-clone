@@ -1,0 +1,26 @@
+$kind: http-request
+name: create project
+url: "{{server}}/projects/create"
+method: POST
+body:
+  type: json
+  content: "{\r
+
+    \  \"name\": \"My First Project\",\r
+
+    \  \"targetBaseUrl\": \"https://api.example.com\",\r
+
+    \  \"rateLimit\": {\r
+
+    \    \"windowMs\": 60000,\r
+
+    \    \"maxRequests\": 100\r
+
+    \  }\r
+
+    }\r\n"
+auth:
+  type: bearer
+  credentials:
+    token: ""
+order: 1783226702749

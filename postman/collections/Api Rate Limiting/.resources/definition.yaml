@@ -1,0 +1,19 @@
+$kind: collection
+name: Api Rate Limiting
+variables:
+  - key: json_web_token_0paa
+    secret: true
+  - key: json_web_token_0p12
+    secret: true
+  - key: bearer_token_0i61
+    secret: true
+  - key: supabase_service_role_api_key_05v8
+    secret: true
+  - key: bearer_token_129t
+    secret: true
+  - key: json_web_token_0a6b
+    secret: true
+  - key: supabase_service_role_api_key_07pz
+    secret: true
+  - key: auth_secret_07pz
+    secret: true

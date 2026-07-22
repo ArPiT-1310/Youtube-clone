@@ -1,0 +1,9 @@
+$kind: http-request
+name: get project by id
+url: "{{server}}/projects/get/6a49e1c214ae28e3f6d42981"
+method: GET
+auth:
+  type: bearer
+  credentials:
+    token: ""
+order: 3580283508124806

@@ -1,0 +1,7 @@
+$kind: http-request
+name: me
+url: "{{server}}/auth/me"
+method: GET
+headers:
+  Authorization: Bearer {{supabase_service_role_api_key_05v8}}
+order: 4045308556721246

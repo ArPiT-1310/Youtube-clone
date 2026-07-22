@@ -1,0 +1,10 @@
+$kind: http-request
+name: refresh
+url: "{{server}}/auth/refresh"
+method: POST
+headers:
+  Authorization: Bearer {{json_web_token_0p12}}
+body:
+  type: json
+  content: ""
+order: 3972182241335631
